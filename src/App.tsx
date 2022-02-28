@@ -1,40 +1,89 @@
 import { useState } from "react";
-import logo from "./logo.svg";
 import "./App.css";
 
 function App() {
-  const [count, setCount] = useState(0);
+  const [prevCount, setPrevCount] = useState("0");
+  const [currCount, setCurrCount] = useState("0");
+
+  const WATER_UNIT_PRICE = 1.5 as const;
+  const WATER_BASE_PRICE = 50 as const;
+
+  const usage = Number(currCount) - Number(prevCount);
+  const waterFee = WATER_UNIT_PRICE * usage;
+  const totalFee = waterFee + WATER_BASE_PRICE;
 
   return (
     <div className="App">
       <div className="container">
         <h1>Pinsiön alueen vesiosuuskunnan vesilaskuri</h1>
 
-        <Field name="prevAmount" text="Edellinen lukema: " type="number">
+        <Field
+          name="prevAmount"
+          text="Edellinen lukema: "
+          type="number"
+          value={prevCount}
+          setValue={setPrevCount}
+        >
           m<sup>2</sup>
         </Field>
 
-        <Field name="currAmount" text="Nykyinen lukema: " type="number">
+        <Field
+          name="currAmount"
+          text="Nykyinen lukema: "
+          type="number"
+          value={currCount}
+          setValue={setCurrCount}
+        >
           m<sup>2</sup>
         </Field>
 
-        <Field name="usage" text="Kulutus: " type="number" disabled>
+        <Field
+          name="usage"
+          text="Kulutus: "
+          type="number"
+          value={usage}
+          disabled
+        >
           m<sup>2</sup>
         </Field>
 
-        <Field name="unitPrice" text="Veden yksikköhinta: " type="number" value="1.5" disabled>
+        <Field
+          name="unitPrice"
+          text="Veden yksikköhinta: "
+          type="number"
+          value={WATER_UNIT_PRICE}
+          disabled
+        >
           €/m<sup>2</sup>
         </Field>
 
-        <Field name="waterPrice" text="Veden hinta: " type="number" disabled>
+        <Field
+          name="waterFee"
+          text="Veden hinta: "
+          type="number"
+          value={waterFee}
+          disabled
+        >
           €
         </Field>
 
-        <Field name="baseFee" text="Perusmaksu: " type="number" value="50" disabled>
+        <Field
+          name="baseFee"
+          text="Perusmaksu: "
+          type="number"
+          value={WATER_BASE_PRICE}
+          disabled
+        >
           €
         </Field>
 
-        <Field name="totalPrice" text="Yhteensä: " type="number" disabled>
+        <Field
+          name="totalFee"
+          text="Yhteensä: "
+          type="number"
+          value={totalFee}
+          disabled
+        >
           €
         </Field>
       </div>
@@ -46,13 +95,20 @@ const Field: React.FC<{
   name: string;
   text: string;
   type: string;
-  value?: string;
+  value?: unknown;
+  setValue?: (value: string) => void;
   disabled?: boolean;
-}> = ({ children, name, text, type, value, disabled }) => {
+}> = ({ children, name, text, type, value, setValue, disabled }) => {
   return (
     <div className={`row formRow ${name}Row`}>
       <Label name={name} text={text} />
-      <Value type={type} name={name} value={value} disabled={disabled} />
+      <Value
+        type={type}
+        name={name}
+        value={String(value)}
+        setValue={setValue}
+        disabled={disabled}
+      />
       <Unit>{children}</Unit>
     </div>
   );
@@ -66,18 +122,20 @@ const Label: React.FC<{ name: string; text: string }> = ({ name, text }) => {
   );
 };
 
-const Value: React.FC<{ type: string; name: string; value?: string; disabled?: boolean }> = ({
-  type,
-  name,
-  value,
-  disabled,
-}) => {
+const Value: React.FC<{
+  type: string;
+  name: string;
+  value?: string | number;
+  setValue?: (value: string) => void;
+  disabled?: boolean;
+}> = ({ type, name, value, setValue, disabled }) => {
   return (
     <div className="col valueCol">
       <input
         type={type}
         name={name}
         value={value}
+        onChange={(e) => setValue && setValue(e.target.value)}
         disabled={disabled}
         className={`inputField ${name}Field`}
       />
