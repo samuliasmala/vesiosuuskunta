@@ -2,15 +2,22 @@ import { useState } from "react";
 import "./App.css";
 
 function App() {
-  const [prevCount, setPrevCount] = useState("0");
-  const [currCount, setCurrCount] = useState("0");
+  // Check if prevCount is given as url parameter
+  const windowUrl = window.location.search;
+  const params = new URLSearchParams(windowUrl);
+
+  const [prevCount, setPrevCount] = useState(params.get("prevCount") ?? "");
+  const [currCount, setCurrCount] = useState("");
 
   const WATER_UNIT_PRICE = 1.5 as const;
   const WATER_BASE_PRICE = 50 as const;
 
-  const usage = Number(currCount) - Number(prevCount);
-  const waterFee = WATER_UNIT_PRICE * usage;
-  const totalFee = waterFee + WATER_BASE_PRICE;
+  const usage =
+    currCount !== "" && prevCount !== ""
+      ? Number(currCount) - Number(prevCount)
+      : "";
+  const waterFee = usage !== "" ? WATER_UNIT_PRICE * usage : "";
+  const totalFee = waterFee !== "" ? waterFee + WATER_BASE_PRICE : "";
 
   return (
     <div className="App">
