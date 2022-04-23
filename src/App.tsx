@@ -9,7 +9,7 @@ function App() {
   const [prevCount, setPrevCount] = useState(params.get("prevCount") ?? "");
   const [currCount, setCurrCount] = useState("");
 
-  const WATER_UNIT_PRICE = 1.5 as const;
+  const WATER_UNIT_PRICE = 1.6 as const;
   const WATER_BASE_PRICE = 50 as const;
 
   const usage =
