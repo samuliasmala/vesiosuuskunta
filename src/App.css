@@ -51,7 +51,7 @@ html {
   max-width: 100%;
 }
 
-.unitPriceField, .baseFeeField {
+.constantField {
   border: none;
   background-color: white;
   color: black;

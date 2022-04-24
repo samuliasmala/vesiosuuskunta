@@ -59,7 +59,7 @@ function App() {
           text="Veden yksikköhinta: "
           type="number"
           value={WATER_UNIT_PRICE}
-          disabled
+          constant
         >
           €/m<sup>2</sup>
         </Field>
@@ -79,7 +79,7 @@ function App() {
           text="Perusmaksu: "
           type="number"
           value={WATER_BASE_PRICE}
-          disabled
+          constant
         >
           €
         </Field>
@@ -105,7 +105,8 @@ const Field: React.FC<{
   value?: unknown;
   setValue?: (value: string) => void;
   disabled?: boolean;
-}> = ({ children, name, text, type, value, setValue, disabled }) => {
+  constant?: boolean;
+}> = ({ children, name, text, type, value, setValue, disabled, constant }) => {
   return (
     <div className={`row formRow ${name}Row`}>
       <Label name={name} text={text} />
@@ -115,6 +116,7 @@ const Field: React.FC<{
         value={String(value)}
         setValue={setValue}
         disabled={disabled}
+        constant={constant}
       />
       <Unit>{children}</Unit>
     </div>
@@ -135,7 +137,8 @@ const Value: React.FC<{
   value?: string | number;
   setValue?: (value: string) => void;
   disabled?: boolean;
-}> = ({ type, name, value, setValue, disabled }) => {
+  constant?: boolean;
+}> = ({ type, name, value, setValue, disabled, constant }) => {
   return (
     <div className="col valueCol">
       <input
@@ -143,8 +146,8 @@ const Value: React.FC<{
         name={name}
         value={value}
         onChange={(e) => setValue && setValue(e.target.value)}
-        disabled={disabled}
-        className={`inputField ${name}Field`}
+        disabled={disabled ?? constant}
+        className={`inputField ${constant === true ? "constantField" : ""}`}
       />
     </div>
   );
