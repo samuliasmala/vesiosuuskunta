@@ -6,7 +6,9 @@ function App() {
   const windowUrl = window.location.search;
   const params = new URLSearchParams(windowUrl);
 
-  const [prevCount, setPrevCount] = useState(params.get("prevCount") ?? "");
+  const [prevCount, setPrevCount] = useState(
+    params.get("prevCount")?.replace(",", ".") ?? ""
+  );
   const [currCount, setCurrCount] = useState("");
   const [reference, setReference] = useState("");
 
