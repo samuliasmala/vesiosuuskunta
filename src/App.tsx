@@ -8,9 +8,13 @@ function App() {
 
   const [prevCount, setPrevCount] = useState(params.get("prevCount") ?? "");
   const [currCount, setCurrCount] = useState("");
+  const [reference, setReference] = useState("");
 
   const WATER_UNIT_PRICE = 1.6 as const;
   const WATER_BASE_PRICE = 50 as const;
+  const RECEIVER = "Pinsiön alueen vesiosuuskunta" as const;
+  const ACCOUNT = "FI73 123456 123456" as const;
+  const DUE_DATE = "31.5.2022" as const;
 
   const usage =
     currCount !== "" && prevCount !== ""
@@ -93,6 +97,69 @@ function App() {
         >
           €
         </Field>
+
+        <hr />
+        <h2>Laskun tiedot</h2>
+
+        <Field
+          name="receiver"
+          text="Saaja: "
+          type="text"
+          value={RECEIVER}
+          constant
+          wideCol
+        />
+
+        <Field
+          name="account"
+          text="Tilinumero: "
+          type="text"
+          value={ACCOUNT}
+          constant
+          wideCol
+        />
+
+        <Field
+          name="totalFeeInvoice"
+          text="Summa: "
+          type="number"
+          value={totalFee}
+          disabled
+        >
+          €
+        </Field>
+
+        <Field
+          name="dueDate"
+          text="Eräpäivä: "
+          type="text"
+          value={DUE_DATE}
+          constant
+        />
+
+        <Field
+          name="reference"
+          text="Viite: "
+          type="text"
+          value={reference}
+          setValue={setReference}
+          wideCol
+        />
+
+        <Field
+          name="barcode"
+          text="Virtuaaliviivakoodi: "
+          type="text"
+          value={"123615286548712364"}
+          constant
+          wideCol
+        />
+
+        <button>
+          Kopioi viivakoodi
+          <br />
+          leikepöydälle
+        </button>
       </div>
     </div>
   );
@@ -106,7 +173,18 @@ const Field: React.FC<{
   setValue?: (value: string) => void;
   disabled?: boolean;
   constant?: boolean;
-}> = ({ children, name, text, type, value, setValue, disabled, constant }) => {
+  wideCol?: boolean;
+}> = ({
+  children,
+  name,
+  text,
+  type,
+  value,
+  setValue,
+  disabled,
+  constant,
+  wideCol,
+}) => {
   return (
     <div className={`row formRow ${name}Row`}>
       <Label name={name} text={text} />
@@ -117,6 +195,7 @@ const Field: React.FC<{
         setValue={setValue}
         disabled={disabled}
         constant={constant}
+        wideCol={wideCol}
       />
       <Unit>{children}</Unit>
     </div>
@@ -138,9 +217,10 @@ const Value: React.FC<{
   setValue?: (value: string) => void;
   disabled?: boolean;
   constant?: boolean;
-}> = ({ type, name, value, setValue, disabled, constant }) => {
+  wideCol?: boolean;
+}> = ({ type, name, value, setValue, disabled, constant, wideCol }) => {
   return (
-    <div className="col valueCol">
+    <div className={`col  ${wideCol === true ? "wideValueCol" : "valueCol"}`}>
       <input
         type={type}
         name={name}

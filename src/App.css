@@ -42,13 +42,18 @@ html {
   text-align: right;
 }
 
+.wideValueCol {
+  width: 15rem;
+  text-align: left;
+}
+
 .unitCol {
   width: 2rem;
   padding-left: 0.4rem;
 }
 
 .inputField {
-  max-width: 100%;
+  width: 100%;
 }
 
 .constantField {
