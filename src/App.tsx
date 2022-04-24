@@ -66,6 +66,7 @@ function App() {
           type="number"
           value={WATER_UNIT_PRICE}
           constant
+          decimals={2}
         >
           €/m<sup>2</sup>
         </Field>
@@ -76,6 +77,7 @@ function App() {
           type="number"
           value={waterFee}
           disabled
+          decimals={2}
         >
           €
         </Field>
@@ -86,6 +88,7 @@ function App() {
           type="number"
           value={WATER_BASE_PRICE}
           constant
+          decimals={2}
         >
           €
         </Field>
@@ -96,6 +99,7 @@ function App() {
           type="number"
           value={totalFee}
           disabled
+          decimals={2}
         >
           €
         </Field>
@@ -127,6 +131,7 @@ function App() {
           type="number"
           value={totalFee}
           disabled
+          decimals={2}
         >
           €
         </Field>
@@ -171,11 +176,12 @@ const Field: React.FC<{
   name: string;
   text: string;
   type: string;
-  value?: unknown;
+  value: string | number;
   setValue?: (value: string) => void;
   disabled?: boolean;
   constant?: boolean;
   wideCol?: boolean;
+  decimals?: number;
 }> = ({
   children,
   name,
@@ -186,6 +192,7 @@ const Field: React.FC<{
   disabled,
   constant,
   wideCol,
+  decimals,
 }) => {
   return (
     <div className={`row formRow ${name}Row`}>
@@ -193,11 +200,12 @@ const Field: React.FC<{
       <Value
         type={type}
         name={name}
-        value={String(value)}
+        value={value}
         setValue={setValue}
         disabled={disabled}
         constant={constant}
         wideCol={wideCol}
+        decimals={decimals}
       />
       <Unit>{children}</Unit>
     </div>
@@ -215,12 +223,32 @@ const Label: React.FC<{ name: string; text: string }> = ({ name, text }) => {
 const Value: React.FC<{
   type: string;
   name: string;
-  value?: string | number;
+  value: string | number;
   setValue?: (value: string) => void;
   disabled?: boolean;
   constant?: boolean;
   wideCol?: boolean;
-}> = ({ type, name, value, setValue, disabled, constant, wideCol }) => {
+  decimals?: number;
+}> = ({
+  type,
+  name,
+  value,
+  setValue,
+  disabled,
+  constant,
+  wideCol,
+  decimals,
+}) => {
+  // Remove rounding errors
+  if (typeof value === "number") {
+    value = Number(value.toPrecision(12));
+  }
+
+  // Show desired amount of decimals
+  if (decimals != null) {
+    value = parseFloat(String(value)).toFixed(decimals);
+  }
+
   return (
     <div className={`col  ${wideCol === true ? "wideValueCol" : "valueCol"}`}>
       <input
