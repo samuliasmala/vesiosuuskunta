@@ -11,7 +11,7 @@ function App() {
     params.get("prevCount")?.replace(",", ".") ?? ""
   );
   const [currCount, setCurrCount] = useState("");
-  const [reference, setReference] = useState("");
+  const [reference, setReference] = useState(params.get("ref") ?? "");
 
   const WATER_UNIT_PRICE = 1.6 as const;
   const WATER_BASE_PRICE = 50 as const;
@@ -20,7 +20,10 @@ function App() {
   const DUE_DATE = new Date("2022-05-31");
   const DUE_DATE_STRING = "31.05.2022" as const;
 
-  const usage = Number(currCount) - Number(prevCount);
+  const usage =
+    currCount === "" || prevCount === ""
+      ? 0
+      : Number(currCount) - Number(prevCount);
   const waterFee = WATER_UNIT_PRICE * usage;
   const totalFee = waterFee + WATER_BASE_PRICE;
 
