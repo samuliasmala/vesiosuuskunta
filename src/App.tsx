@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./App.css";
+import { virtualBarcode } from "./utils/barcode";
 
 function App() {
   // Check if prevCount is given as url parameter
@@ -15,17 +16,20 @@ function App() {
   const WATER_UNIT_PRICE = 1.6 as const;
   const WATER_BASE_PRICE = 50 as const;
   const RECEIVER = "Pinsiön alueen vesiosuuskunta" as const;
-  const ACCOUNT = "FI73 123456 123456" as const;
-  const DUE_DATE = "31.5.2022" as const;
+  const ACCOUNT = "FI50 1158 3000 2082 41" as const;
+  const DUE_DATE = new Date("2022-05-31");
+  const DUE_DATE_STRING = "31.05.2022" as const;
 
-  const usage =
-    currCount !== "" && prevCount !== ""
-      ? Number(currCount) - Number(prevCount)
-      : "";
-  const waterFee = usage !== "" ? WATER_UNIT_PRICE * usage : "";
-  const totalFee = waterFee !== "" ? waterFee + WATER_BASE_PRICE : "";
+  const usage = Number(currCount) - Number(prevCount);
+  const waterFee = WATER_UNIT_PRICE * usage;
+  const totalFee = waterFee + WATER_BASE_PRICE;
 
-  const virtualBarcode = "123615286548712364";
+  let barcode: string;
+  try {
+    barcode = virtualBarcode(ACCOUNT, totalFee, reference, DUE_DATE);
+  } catch (e) {
+    barcode = "";
+  }
 
   return (
     <div className="App">
@@ -142,7 +146,7 @@ function App() {
           name="dueDate"
           text="Eräpäivä: "
           type="text"
-          value={DUE_DATE}
+          value={DUE_DATE_STRING}
           constant
         />
 
@@ -152,19 +156,18 @@ function App() {
           type="text"
           value={reference}
           setValue={setReference}
-          wideCol
         />
 
         <Field
           name="barcode"
           text="Virtuaaliviivakoodi: "
           type="text"
-          value={virtualBarcode}
-          constant
+          value={barcode}
+          disabled
           wideCol
         />
 
-        <button onClick={() => navigator?.clipboard?.writeText(virtualBarcode)}>
+        <button onClick={() => navigator?.clipboard?.writeText(barcode)}>
           Kopioi viivakoodi
           <br />
           leikepöydälle
