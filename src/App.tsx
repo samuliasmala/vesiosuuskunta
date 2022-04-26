@@ -25,6 +25,8 @@ function App() {
   const waterFee = usage !== "" ? WATER_UNIT_PRICE * usage : "";
   const totalFee = waterFee !== "" ? waterFee + WATER_BASE_PRICE : "";
 
+  const virtualBarcode = "123615286548712364";
+
   return (
     <div className="App">
       <div className="container">
@@ -157,12 +159,12 @@ function App() {
           name="barcode"
           text="Virtuaaliviivakoodi: "
           type="text"
-          value={"123615286548712364"}
+          value={virtualBarcode}
           constant
           wideCol
         />
 
-        <button>
+        <button onClick={() => navigator?.clipboard?.writeText(virtualBarcode)}>
           Kopioi viivakoodi
           <br />
           leikepöydälle
