@@ -46,7 +46,7 @@ function App() {
           value={prevCount}
           setValue={setPrevCount}
         >
-          m<sup>2</sup>
+          m<sup>3</sup>
         </Field>
 
         <Field
@@ -56,7 +56,7 @@ function App() {
           value={currCount}
           setValue={setCurrCount}
         >
-          m<sup>2</sup>
+          m<sup>3</sup>
         </Field>
 
         <Field
@@ -66,7 +66,7 @@ function App() {
           value={usage}
           disabled
         >
-          m<sup>2</sup>
+          m<sup>3</sup>
         </Field>
 
         <Field
@@ -77,7 +77,7 @@ function App() {
           constant
           decimals={2}
         >
-          €/m<sup>2</sup>
+          €/m<sup>3</sup>
         </Field>
 
         <Field
