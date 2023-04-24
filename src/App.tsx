@@ -13,8 +13,8 @@ function App() {
   const [currCount, setCurrCount] = useState("");
   const [reference, setReference] = useState(params.get("ref") ?? "");
 
-  const WATER_UNIT_PRICE = 1.6 as const;
-  const WATER_BASE_PRICE = 50 as const;
+  const WATER_UNIT_PRICE = 1.65 as const;
+  const WATER_BASE_PRICE = 40 as const;
   const RECEIVER = "Pinsiön alueen vesiosuuskunta" as const;
   const ACCOUNT = "FI50 1158 3000 2082 41" as const;
   const DUE_DATE = new Date("2022-05-31");
