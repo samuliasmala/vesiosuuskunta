@@ -43,7 +43,8 @@ html {
 }
 
 .wideValueCol {
-  width: 27rem;
+  width: 100%;
+  max-width: 15rem;
   text-align: left;
 }
 
